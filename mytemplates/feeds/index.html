@@ -1,0 +1,12 @@
+{% if latest_feed_list %}
+    <ul>
+    {% for feed in latest_feed_list %}
+        <li><a href="{{ feed.id }}" title="{{ feed.url }}">{{ feed.title }}</a> | <a href="{% url feed_delete feed.id %}">Delete</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No feeds are available.</p>
+{% endif %}
+
+<a href="new" title="Create new feed">Add new feed</a>
+

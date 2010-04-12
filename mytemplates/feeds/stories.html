@@ -1,0 +1,13 @@
+<a href="/feeds" title="Back to list">Back to feed list</a>
+<h1>{{ title.title  }}</h1>
+{{title.url}}
+{{titles}}
+
+
+<div>
+{% for story in feed %}
+    <h2 style="font-weight:bold;">{{ story.title }}</h2>
+    <div >{% if story.url %}<audio controls>{{story.url}}</audio>{% endif %}</div>
+    <div>{{ story.description|safe }}</div>
+{% endfor %}
+</div>
