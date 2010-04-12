@@ -1,7 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Feed List{% endblock %}
+
+{% block head %}
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function () {
+   $("a[class='flink']").click(function () {
+// 	alert($(this).attr('title'));
+	$('#result').load($(this).attr('title'));
+   });
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
 {% if latest_feed_list %}
     <ul>
     {% for feed in latest_feed_list %}
-        <li><a href="{{ feed.id }}" title="{{ feed.url }}">{{ feed.title }}</a> | <a href="{% url feed_delete feed.id %}">Delete</a></li>
+        <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> | <a href="{% url feed_delete feed.id %}">Delete</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -9,4 +27,8 @@
 {% endif %}
 
 <a href="new" title="Create new feed">Add new feed</a>
+
+
+<div id="result"><div> 
+{% endblock %}
 

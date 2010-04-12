@@ -8,6 +8,7 @@ admin.autodiscover()
 from django.views.generic import list_detail
 from django.views.generic import create_update
 from djtut.feeds.models import Feed
+from djtut import settings
 
 publisher_info = {
     "queryset" : Feed.objects.all(),
@@ -22,6 +23,7 @@ feed_form = {
 urlpatterns = patterns('',
     (r'^polls/', include('djtut.polls.urls')),
     (r'^feeds/', include('djtut.feeds.urls')),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT }),
     # Example:
     # (r'^djtut/', include('djtut.foo.urls')),
 
@@ -40,6 +42,5 @@ urlpatterns = patterns('',
     #(r'^accounts/', include('registration.urls')),
     (r'^accounts/', include('registration.backends.default.urls')),
     # Uncomment the next line to enable the admin:
-
 
 )

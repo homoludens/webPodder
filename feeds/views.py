@@ -60,7 +60,7 @@ def make_feed_form(request):
 	    create_stories(f,tmp_feed)
 	    return f
 
-    return FeedForm2
+    return FeedForm
 
 	 
 def feed_create(request):
