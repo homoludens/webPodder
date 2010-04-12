@@ -22,6 +22,10 @@
       // 	alert($(this).attr('title'));
 	      $('#result').load($(this).attr('title')).hide().fadeIn('slow');;
 	});
+	$("a[class='dfeed']").click(function () {
+      // 	alert($(this).attr('title'));
+	      $('#addfeed').load($(this).attr('title')).hide().fadeIn('slow');;
+	});
 	$("a[id='newfeed']").click(function () {
 //       	alert($(this).attr('title'));
 	      $('#addfeed').load($(this).attr('title')).hide().fadeIn('slow');;
@@ -36,7 +40,7 @@
 	{% if latest_feed_list %}
 	    <ul>
 	      {% for feed in latest_feed_list %}
-		  <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> | <a href="{% url feed_delete feed.id %}">Delete</a></li>
+		  <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> | <a class="dfeed" title="{% url feed_delete feed.id %}" href="#{% url feed_delete feed.id %}">Delete</a></li>
 	      {% endfor %}
 	    </ul>
 	{% else %}

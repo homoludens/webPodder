@@ -83,6 +83,7 @@ def feed_delete(request, feed_id):
         object_id=feed_id,
         template_name='feeds/delete.html',
         post_delete_redirect="/feeds",
+	extra_context={'feed_id':feed_id}
     )
 
 

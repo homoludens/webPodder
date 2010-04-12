@@ -1,9 +1,18 @@
-<body>
+<script src="/static/jquery-1.3.2.min.js"></script>
+<script src="/static/jquery.form.js"></script>
+<script type="text/javascript"> 
+    // wait for the DOM to be loaded 
+    $(document).ready(function() { 
+	// bind 'myForm' and provide a simple callback function 
+	$('#df').ajaxForm(function() { 
+	    alert("Feed deleted!"); 
+	}); 
+    }); 
+</script> 
+
 {% block content %}
-    <form action="" method="post">
+    <form action="{% url feed_delete feed_id %}" method="post" id="df">
         <p>Are you sure want to delete {{ object.title }}?</p>
         <p><input type="submit" value="Continue &rarr;" /> or <a href="/feeds">Cancel</a></p>
     </form>
 {% endblock %}
-
-</body>
