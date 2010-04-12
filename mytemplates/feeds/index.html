@@ -3,32 +3,54 @@
 {% block title %}Feed List{% endblock %}
 
 {% block head %}
+<style>
+    #left{
+      color:#666;
+      float:left;
+      width:300px;
+    }
+    #right{
+      color:#333;
+      width:700px;
+      margin-left:300px;
+    }
+</style>
 
 <script type="text/javascript" charset="utf-8">
-$(document).ready(function () {
-   $("a[class='flink']").click(function () {
-// 	alert($(this).attr('title'));
-	$('#result').load($(this).attr('title'));
-   });
-});
+    $(document).ready(function () {
+	$("a[class='flink']").click(function () {
+      // 	alert($(this).attr('title'));
+	      $('#result').load($(this).attr('title')).hide().fadeIn('slow');;
+	});
+	$("a[id='newfeed']").click(function () {
+//       	alert($(this).attr('title'));
+	      $('#addfeed').load($(this).attr('title')).hide().fadeIn('slow');;
+	});	
+    });
 </script>
 
 {% endblock %}
 
 {% block content %}
-{% if latest_feed_list %}
-    <ul>
-    {% for feed in latest_feed_list %}
-        <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> | <a href="{% url feed_delete feed.id %}">Delete</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No feeds are available.</p>
-{% endif %}
+    <div id="left"> 
+	{% if latest_feed_list %}
+	    <ul>
+	      {% for feed in latest_feed_list %}
+		  <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> | <a href="{% url feed_delete feed.id %}">Delete</a></li>
+	      {% endfor %}
+	    </ul>
+	{% else %}
+	    <p>No feeds are available.</p>
+	{% endif %}
 
-<a href="new" title="Create new feed">Add new feed</a>
+	<a id="newfeed" href="#new" title="/feeds/new">Add new feed</a>
+    
+	<div id="addfeed"></div> 
 
+    </div>
 
-<div id="result"><div> 
+<div id="right"> 
+  <div id="result"></div> 
+</div>
 {% endblock %}
 
