@@ -1,0 +1,6 @@
+current deps:
+
+feedparser
+django-registration - svn version
+django-debug-toolbar
+south
