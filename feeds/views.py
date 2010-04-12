@@ -141,57 +141,7 @@ def feed_delete(request, feed_id):
     )
 
 
-def find_title(sender, **kwargs):
-    # the object which is saved can be accessed via kwargs 'instance' key.
-    obj = kwargs['instance']
-    tmp_feed = feedparser.parse(obj.url)
-
-    f = Feed.objects.get(id=obj.id)
-    
-    f.title = tmp_feed.feed.title
-
-    post_save.disconnect(find_title, sender=Feed)
-    f.save()
-    post_save.connect(find_title, sender=Feed)
-    
-
-    for entry in tmp_feed['entries']:
-      i = Story(   feed = f,
-                   title = entry.get('title'),
-                   description = entry.get('summary'),
-		   #url = entry.enclosures[0].href,
-                   )
-      i.save()
-
-#post_save.connect(find_title, sender=Feed)
-
-def find_title_pre(sender, **kwargs):
-    # the object which is saved can be accessed via kwargs 'instance' key.
-    obj = kwargs['instance']
-    tmp_feed = feedparser.parse(obj.url)
-
-    #product = Feed(url=obj.url , title = tmp_feed.feed.title)
-    #product.url = obj.url
-    #product.title = tmp_feed.feed.title
-    kwargs['instance'].title = tmp_feed.feed.title 
-
-#pre_save.connect(find_title_pre, sender=Feed)
-
-
 def create_stories(feed_object,tmp_feed):
-    # the object which is saved can be accessed via kwargs 'instance' key.
-    #obj = kwargs['instance']
-    #tmp_feed = feedparser.parse(obj.url)
-
-    #f = Feed.objects.get(id=feed_object.id)
-    
-    #f.title = tmp_feed.feed.title
-
-    #post_save.disconnect(find_title, sender=Feed)
-    #f.save()
-    #post_save.connect(find_title, sender=Feed)
-    
-
     for entry in tmp_feed['entries']:
       i = Story(   feed = feed_object,
                    title = entry.get('title'),
