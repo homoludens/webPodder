@@ -46,13 +46,13 @@ def stories(request, feed_id):
 
 #closure: http://en.wikipedia.org/wiki/Closure_%28computer_science%29
 def make_feed_form(request):
-    class FeedForm2(ModelForm):
+    class FeedForm(ModelForm):
 	class Meta:
 	    model=Feed
 	    exclude=['title', 'created_by']
 
 	def save(self, commit=True):
-	    f = super(FeedForm2, self).save(commit=False)
+	    f = super(FeedForm, self).save(commit=False)
 	    tmp_feed = feedparser.parse(f.url)
 	    f.title = tmp_feed.feed.title
 	    if not f.pk: f.created_by = request.user
@@ -65,10 +65,10 @@ def make_feed_form(request):
 	 
 def feed_create(request):
   
-    FeedForm2 = make_feed_form(request)
+    FeedForm = make_feed_form(request)
 
     return create_object(request,
-	form_class = FeedForm2,
+	form_class = FeedForm,
         #model=Feed,
         template_name='feeds/feed_form.html',
         post_save_redirect="/feeds",
