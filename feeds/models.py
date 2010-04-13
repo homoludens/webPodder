@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Feed(models.Model):
     title = models.CharField(max_length=200)
-    url = models.CharField(max_length=1024)
+    url = models.URLField(blank=False, unique=True)
     created_by = models.ForeignKey(User, default=0, )
     #created_by = models.ForeignKey(User, editable=False, blank=True, null=True) 
 

@@ -14,22 +14,22 @@
       width:700px;
       margin-left:300px;
     }
+    #right a img{
+      border:none;
+    }
 </style>
 
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 	$("a[class='flink']").click(function () {
-      // 	alert($(this).attr('title'));
-	      $('#result').load($(this).attr('title')).hide().fadeIn('slow');;
+	      $('#result').load($(this).attr('href').replace('#',''));
 	});
 	$("a[class='dfeed']").click(function () {
-      // 	alert($(this).attr('title'));
-	      $('#addfeed').load($(this).attr('title')).hide().fadeIn('slow');;
+	      $('#addfeed').load($(this).attr('href').replace('#','')).hide().fadeIn('slow');
 	});
 	$("a[id='newfeed']").click(function () {
-//       	alert($(this).attr('title'));
-	      $('#addfeed').load($(this).attr('title')).hide().fadeIn('slow');;
-	});	
+	      $('#addfeed').load($(this).attr('href').replace('#','')).hide().fadeIn('slow');
+	});
     });
 </script>
 

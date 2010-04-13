@@ -64,7 +64,17 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'pagination.middleware.PaginationMiddleware',	
 )
+
+TEMPLATE_CONTEXT_PROCESSORS=(
+        "django.core.context_processors.auth",
+        "django.core.context_processors.debug",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.media",
+        "django.core.context_processors.request",
+)
+
 
 #INTERNAL_IPS = ('127.0.0.1',)
 
@@ -107,6 +117,7 @@ INSTALLED_APPS = (
     'registration',
     'debug_toolbar',
     'south',
+    'pagination',
 )
 
 

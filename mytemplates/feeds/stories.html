@@ -1,8 +1,23 @@
 {% extends "base.html" %}
+{% load pagination_tags %}
+
 
 {% block title %} {{ title.title  }} Stories {% endblock %}
 
+{% block head %}
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+	$("a[class='next']").click(function () {
+// 	      alert($(this).attr('href').replace('?page','2/?page'));
+// 	      $('#result').load($(this).attr('href').replace('/?page','/2/?page'));
+	});
+    });
+</script>
+{% endblock %}
+
 {% block content %}
+{% autopaginate feed 4 %}
+
 
     <a href="/feeds" title="Back to list">Back to feed list</a>
 	<h1>{{ title.title  }}</h1>
@@ -18,4 +33,5 @@
 	{% endfor %}
     </div>
 
+{% paginate %}
 {% endblock %} 
