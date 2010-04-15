@@ -1,0 +1,48 @@
+body{
+font:Sans;
+font-size:14px;
+background:#fff;
+color:#36393D;
+
+/*background:#111;
+color:#fff;*/
+
+}
+
+input{
+font:Sans;
+font-size:14px;
+background:#ddd;
+color:#36393D;
+border:2px solid #777;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding: 2px;
+}
+
+
+#left{
+  float:left;
+  width:300px;
+}
+#right{
+  width:700px;
+  margin-left:300px;
+}
+#right a img{
+  border:none;
+} 
+
+a{
+color:#356AA0;
+text-decoration:none;
+/* color:#CDEB8B; */
+}
+
+a:hover{
+text-decoration:underline;
+}
+
+h1{
+color:#73880A;
+}
