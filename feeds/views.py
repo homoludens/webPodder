@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from djtut.feeds.models import Feed, Story
+from djtut.feeds.models import Feed, Story, UserProfile
 
 from django.contrib.auth.models import User
 
@@ -48,14 +48,20 @@ def make_feed_form(request):
     class FeedForm(ModelForm):
 	class Meta:
 	    model=Feed
-	    exclude=['title', 'created_by']
+	    exclude=['title']
 
 	def save(self, commit=True):
 	    f = super(FeedForm, self).save(commit=False)
+
 	    tmp_feed = feedparser.parse(f.url)
 	    f.title = tmp_feed.feed.title
-	    if not f.pk: f.created_by = request.user
 	    if commit: f.save()
+	    
+	    if f.pk: 
+	      user = User.objects.get(name=request.user)
+	      user_profile = user.get_profile()
+	      user_profile.subscriptions.add(f)
+	    
 	    create_stories(f,tmp_feed)
 	    return f
 
