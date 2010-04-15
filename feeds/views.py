@@ -39,13 +39,11 @@ import feedparser
 
 
 def index(request):
-    #print dir(request.user)
     if request.user.is_anonymous:
       latest_feed_list = Feed.objects.all()[:5]
     elif request.user.is_authenticated:
       user_profile = request.user.get_profile()
       latest_feed_list = user_profile.subscriptions.all()
-    #latest_feed_list = Feed.objects.all()
     return render_to_response('feeds/index.html', {'latest_feed_list': latest_feed_list})
 
 
