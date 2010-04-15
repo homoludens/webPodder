@@ -32,9 +32,17 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save, pre_save
 import feedparser
 
+#p2.article_set.all()
+#a1.publications.all()
+
+
+
 
 def index(request):
-    latest_feed_list = Feed.objects.all()
+    user_profile = request.user.get_profile()
+    #print dir(request.user)
+    latest_feed_list = user_profile.subscriptions.all()
+    #latest_feed_list = Feed.objects.all()
     return render_to_response('feeds/index.html', {'latest_feed_list': latest_feed_list})
 
 
@@ -58,8 +66,7 @@ def make_feed_form(request):
 	    if commit: f.save()
 	    
 	    if f.pk: 
-	      user = User.objects.get(name=request.user)
-	      user_profile = user.get_profile()
+	      user_profile = request.user.get_profile()
 	      user_profile.subscriptions.add(f)
 	    
 	    create_stories(f,tmp_feed)
