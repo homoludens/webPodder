@@ -42,5 +42,4 @@ urlpatterns = patterns('',
     #(r'^accounts/', include('registration.urls')),
     (r'^accounts/', include('registration.backends.default.urls')),
     # Uncomment the next line to enable the admin:
-
 )
