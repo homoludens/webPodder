@@ -53,28 +53,28 @@ def make_feed_form(request):
 	    model=Feed
 	    exclude=['title']
 	    
-	#def clean_url(self):
-	    #print "marko clean_url"
-	    #print self
-	    #return self.cleaned_data
-	   
-	   
-
-	#def clean_url(self):
-	    #print "clean_url"
-	    #url = self.cleaned_data.get('url')
-	    #if not 1:
-		#raise forms.ValidationError(_('The file type is invalid: %s' % type))
-	    #return self
 	def clean_url(self):
-	    if self.validate_unique():
-		raise forms.ValidationError('This podcast is added to your profile')
-		print self
-		#print self.cleaned_data
+	    try:
+	      f = Feed.objects.get(url=self.cleaned_data['url'])
+	    except Feed.DoesNotExist:
+	      return self.cleaned_data['url']
+	      
+	    if f.pk:
+	      user_profile = request.user.get_profile()
+	      try:
+		a = user_profile.subscriptions.get(pk=f.pk)
+		raise forms.ValidationError('You are already subscribed to %s' % f.title)
+		print "try"
+	      except Feed.DoesNotExist:
+		user_profile.subscriptions.add(f)
+		raise forms.ValidationError('Podcast %s is added to your profile' % f.title) 
+		print "except"      
+	    
 	    if not (self.cleaned_data.get('url')):
-		raise forms.ValidationError(('You must enter one of the options'))
-	    print self.cleaned_data['url']
+		raise forms.ValidationError('You must enter valid URL')
+	      
 	    return self.cleaned_data['url']
+
 
 	def save(self, commit=True):
 	    print "save"
@@ -125,4 +125,7 @@ def create_stories(feed_object,tmp_feed):
                    description = entry.get('summary'),
 		   #url = entry.enclosures[0].href,
                    )
-      i.save()
+      try:
+	i.save()
+      except Story.IntegrityError:
+	raise forms.ValidationError('Feed with problems')
