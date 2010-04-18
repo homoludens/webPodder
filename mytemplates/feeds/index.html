@@ -18,6 +18,13 @@
     });
 </script>
 
+  <script>
+ jQuery().ready(function() {
+   var tab=jQuery("#result");
+   tab.load("/feeds/{{ feed.id }}") 
+  });
+ </script>
+
 {% endblock %}
 
 {% block content %}

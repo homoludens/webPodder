@@ -19,7 +19,7 @@ from django.core.urlresolvers import reverse
 
 from django.db.models.signals import post_save, pre_save
 import feedparser
-
+from django.template.loader import render_to_string
 
 def index(request):
     if request.user.is_authenticated():
@@ -38,7 +38,7 @@ def stories(request, feed_id):
     
     context = RequestContext(request)
     context['dynamic_div'] = 'result'
-    context['ref_url'] = reverse('stories',args=[])
+    context['ref_url'] = '/feeds/'+feed_id+'/'
     context['feed'] = all_stories
     context['title'] = p
 
