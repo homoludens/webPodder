@@ -123,3 +123,4 @@ INSTALLED_APPS = (
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 AUTH_PROFILE_MODULE = 'feeds.UserProfile'
+LOGIN_REDIRECT_URL = '/feeds'

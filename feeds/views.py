@@ -1,50 +1,34 @@
-# Create your views here.
-
 # -*- coding: utf-8 -*-
 # Create your views here.
 from django.template import Context, loader
-from django.http import HttpResponse
-
-#from djtut.feeds.models import Feed
-from django.http import Http404
-#from django.shortcuts import render_to_response
+from django.http import Http404,  HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-
-from django.shortcuts import get_object_or_404, render_to_response
-from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from djtut.feeds.models import Feed, Story, UserProfile
 
+from djtut.feeds.models import Feed, Story, UserProfile
 from django.contrib.auth.models import User
 
 
 from django.forms import ModelForm
 
-from django.http import HttpResponse
-
-from django.views.generic.create_update import create_object
-from django.views.generic.create_update import delete_object
+from django.views.generic.create_update import create_object, delete_object
 
 from django.core.urlresolvers import reverse
 
 from django.db.models.signals import post_save, pre_save
 import feedparser
 
-#p2.article_set.all()
-#a1.publications.all()
-
-
-
 
 def index(request):
-    if request.user.is_anonymous:
-      latest_feed_list = Feed.objects.all()[:5]
-    elif request.user.is_authenticated:
+    if request.user.is_authenticated():
       user_profile = request.user.get_profile()
       latest_feed_list = user_profile.subscriptions.all()
-    return render_to_response('feeds/index.html', {'latest_feed_list': latest_feed_list})
+    else:
+      latest_feed_list = Feed.objects.all()[:5]
+
+    return render_to_response('feeds/index.html', {'latest_feed_list': latest_feed_list,'user':request.user })
 
 
 def stories(request, feed_id):
@@ -58,12 +42,35 @@ def make_feed_form(request):
 	class Meta:
 	    model=Feed
 	    exclude=['title']
+	    
+	#def clean_url(self):
+	    #print "marko clean_url"
+	    #print self
+	    #return self.cleaned_data
+	   
+	   
+
+	#def clean_url(self):
+	    #print "clean_url"
+	    #url = self.cleaned_data.get('url')
+	    #if not 1:
+		#raise forms.ValidationError(_('The file type is invalid: %s' % type))
+	    #return self
+	def clean_url(self):
+	    print "clean url"
+	    if db.IntegrityError:
+	      print "except django.db.IntegrityError:"
+	    if not (self.cleaned_data.get('title') and self.cleaned_data.get('url')):
+		raise ValidationError(_('You must enter one of the options'))
+	    return self.cleaned_data
 
 	def save(self, commit=True):
+	    print "save"
 	    f = super(FeedForm, self).save(commit=False)
 
 	    tmp_feed = feedparser.parse(f.url)
 	    f.title = tmp_feed.feed.title
+
 	    if commit: f.save()
 	    
 	    if f.pk: 
@@ -77,9 +84,8 @@ def make_feed_form(request):
 
 	 
 def feed_create(request):
-  
     FeedForm = make_feed_form(request)
-
+  
     return create_object(request,
 	form_class = FeedForm,
         #model=Feed,
