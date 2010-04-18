@@ -138,9 +138,10 @@ def create_stories(feed_object,tmp_feed):
       i = Story(   feed = feed_object,
                    title = entry.get('title'),
                    description = entry.get('summary'),
+		   #description = entry['content'][0]['value']                   
 		   #url = entry.enclosures[0].href,
                    )
       try:
 	i.save()
-      except Story.IntegrityError:
+      except:
 	raise forms.ValidationError('Feed with problems')
