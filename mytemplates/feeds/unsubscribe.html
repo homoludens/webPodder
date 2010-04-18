@@ -1,0 +1,8 @@
+{% block content %}
+    <form action="{% url feed_unsubscribe feed_id %}" method="post" id="uf">
+        <p>Are you sure want to unsubscribe from {{ feed_id }}?</p>
+        <p><input type="submit" value="Continue &rarr;" /> or <a href="/feeds">Cancel</a></p>
+    </form>
+
+<a href="/feeds">HOME</a> 
+{% endblock %}
