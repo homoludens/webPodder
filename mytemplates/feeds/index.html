@@ -32,7 +32,9 @@
 	{% if latest_feed_list %}
 	    <ul>
 	      {% for feed in latest_feed_list %}
-		  <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> | <a class="dfeed" title="{% url feed_delete feed.id %}" href="#{% url feed_delete feed.id %}">Delete</a></li>
+		  <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> 
+		    | <a class="dfeed" title="{% url feed_delete feed.id %}" href="#{% url feed_delete feed.id %}">D</a> 
+		    | <a class="dfeed" title="{% url feed_unsubscribe_confirm feed.id %}" href="#{% url feed_unsubscribe_confirm feed.id %}">Un</a></li> 
 	      {% endfor %}
 	    </ul>
 	{% else %}

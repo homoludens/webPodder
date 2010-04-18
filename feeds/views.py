@@ -96,6 +96,7 @@ def make_feed_form(request):
 
 	 
 def feed_create(request):
+    """Create new feed"""
     FeedForm = make_feed_form(request)
   
     return create_object(request,
@@ -108,7 +109,7 @@ def feed_create(request):
 
 
 def feed_delete(request, feed_id):
-    """Delete a note based on id"""
+    """Delete feed"""
     return delete_object(request,
         model=Feed,
         object_id=feed_id,
@@ -118,7 +119,21 @@ def feed_delete(request, feed_id):
     )
 
 
+def feed_unsubscribe_confirm(request, feed_id):
+    """Confirm unsubscribe from feed"""    
+    return render_to_response('feeds/unsubscribe.html', {'feed_id': feed_id,'user':request.user })
+
+def feed_unsubscribe(request, feed_id):
+    """Unsubscribe from feed"""
+    f = Feed.objects.get(pk=feed_id)
+    user_profile = request.user.get_profile()
+    user_profile.subscriptions.remove(f)
+    
+    next_url = request.GET.get('next', '/feeds')
+    return HttpResponseRedirect(next_url)
+
 def create_stories(feed_object,tmp_feed):
+    """Create stories for new feed"""
     for entry in tmp_feed['entries']:
       i = Story(   feed = feed_object,
                    title = entry.get('title'),

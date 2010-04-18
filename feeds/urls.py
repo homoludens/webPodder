@@ -25,6 +25,9 @@ urlpatterns = patterns('djtut.feeds.views',
     #(r'^new/$', 'feed_create'),  
     url(r'^new/$', 'feed_create', name='feed_form'),  
     url(r'^delete/(?P<feed_id>\d+)/$', 'feed_delete', name='feed_delete'),
+    url(r'^unsubscribe/(?P<feed_id>\d+)/$', 'feed_unsubscribe_confirm', name='feed_unsubscribe_confirm'),
+    url(r'^unsubscribe-confirmed/(?P<feed_id>\d+)/$', 'feed_unsubscribe', name='feed_unsubscribe'),
+
 
     # Uncomment the next line to enable the admin:
 
