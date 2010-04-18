@@ -34,7 +34,15 @@ def index(request):
 def stories(request, feed_id):
     p = get_object_or_404(Feed, pk=feed_id)
     all_stories = Story.objects.filter(feed=feed_id)
-    return render_to_response('feeds/stories.html', {'feed': all_stories, 'title': p}, context_instance=RequestContext(request))
+    #return render_to_response('feeds/stories.html', {'feed': all_stories, 'title': p}, context_instance=RequestContext(request))
+    
+    context = RequestContext(request)
+    context['dynamic_div'] = 'result'
+    context['ref_url'] = reverse('stories',args=[])
+    context['feed'] = all_stories
+    context['title'] = p
+
+    return HttpResponse(render_to_string('feeds/stories.html', context),mimetype='text/plain')
 
 #closure: http://en.wikipedia.org/wiki/Closure_%28computer_science%29
 def make_feed_form(request):
