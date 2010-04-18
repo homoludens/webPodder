@@ -20,6 +20,8 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save, pre_save
 import feedparser
 from django.template.loader import render_to_string
+from django import forms
+
 
 def index(request):
     if request.user.is_authenticated():
@@ -65,12 +67,14 @@ def make_feed_form(request):
 		#raise forms.ValidationError(_('The file type is invalid: %s' % type))
 	    #return self
 	def clean_url(self):
-	    print "clean url"
-	    if db.IntegrityError:
-	      print "except django.db.IntegrityError:"
-	    if not (self.cleaned_data.get('title') and self.cleaned_data.get('url')):
-		raise ValidationError(_('You must enter one of the options'))
-	    return self.cleaned_data
+	    if self.validate_unique():
+		raise forms.ValidationError('This podcast is added to your profile')
+		print self
+		#print self.cleaned_data
+	    if not (self.cleaned_data.get('url')):
+		raise forms.ValidationError(('You must enter one of the options'))
+	    print self.cleaned_data['url']
+	    return self.cleaned_data['url']
 
 	def save(self, commit=True):
 	    print "save"
