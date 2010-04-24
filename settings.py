@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 # Django settings for djtut project.
 
+import os
+import sys
+PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -37,11 +42,11 @@ USE_I18N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = '/home/homoludens/projekti/django/djtut/static'
-
+AVATAR_STORAGE_DIR = 'avatars'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = 'http://localhost:8080/static/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -118,6 +123,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'south',
     'pagination',
+    'avatar',
 )
 
 

@@ -21,18 +21,19 @@
 <script>
     jQuery().ready(function() {
 	var tab=jQuery("#result");
-	tab.load("/feeds/{{ feed.id }}") 
+	tab.load("/feeds/4") 
+// 	tab.load("/feeds/{{ feed.id }}") 
     });
 </script>
 
 {% endblock %}
-
+{% load truncate_filters %} 
 {% block content %}
     <div id="left"> 
 	{% if latest_feed_list %}
 	    <ul>
 	      {% for feed in latest_feed_list %}
-		  <li><a class="flink" href="#{{ feed.id }}" title="/feeds/{{ feed.id }}">{{ feed.title }}</a> 
+		  <li><a class="flink" href="#{{ feed.id }}" title="{{ feed.title }}">{{ feed.title|truncate_chars:30 }}</a> 
 		    | <a class="dfeed" title="{% url feed_delete feed.id %}" href="#{% url feed_delete feed.id %}">D</a> 
 		    | <a class="dfeed" title="{% url feed_unsubscribe_confirm feed.id %}" href="#{% url feed_unsubscribe_confirm feed.id %}">Un</a></li> 
 	      {% endfor %}
@@ -48,7 +49,10 @@
 	<div id="user">
 		  <a id="login" href="/accounts/login" title="Login">Login</a><br/>
 		  <a id="logout" href="/accounts/logout" title="Logout">Logout</a><br/>
-		   {{ user }}
+		  {{ user }}<br/>
+		  {% load avatar_tags %}
+		  {% avatar user %}<br/>
+		  <a href="{% url avatar_change %}">Change your avatar</a>
 	</div> 
 
     </div>

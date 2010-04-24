@@ -1,6 +1,6 @@
 body{
-font:Sans;
-font-size:14px;
+font-family:Liberation Sans, sans;
+font-size:75%;
 background:#fff;
 color:#36393D;
 
@@ -41,6 +41,8 @@ text-decoration:none;
 
 a:hover{
 text-decoration:underline;
+/* -moz-box-shadow: 0px  0px  2px #111; */
+
 }
 
 h1{

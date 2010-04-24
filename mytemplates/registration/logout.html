@@ -1,4 +1,9 @@
 {% extends "base.html" %}
 
-Izlogovan si!
-<a href="/feeds">Feed List</a>
+{% block content %}
+
+Izlogovan si!<br/>
+<a href="/feeds">Feed List</a><br/>
+<a id="login" href="/accounts/login" title="Login">Login back!</a><br/><br/>
+
+{% endblock %}
