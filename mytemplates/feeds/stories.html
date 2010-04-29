@@ -23,7 +23,14 @@
 	<h1>{{ title.title  }}</h1>
 	{{title.url}}
 	{{titles}}
-
+{% load avatar_tags %}
+    <div id=users>
+	<p>
+	{% for user in usersSubscribed %}
+	    <a class="flink" href="/users/{{ user.id }}" title="{{ user.user }}">{% avatar user.user 30 %}</a>
+	{% endfor %}
+	</p>
+    </div>
 
     <div>
 	{% for story in feed %}
@@ -32,6 +39,8 @@
 	    <div>{{ story.description|safe }}</div>
 	{% endfor %}
     </div>
+
+
 
 {% ajax_paginate %}
 {% endblock %} 

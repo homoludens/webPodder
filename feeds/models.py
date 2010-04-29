@@ -3,7 +3,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save  
 
+class Category(models.Model):  
+    name = models.CharField(max_length=128)
+    slug = models.SlugField('Slug')
 
+    def __str__(self):  
+          return "%s's profile" % self.category
 
 
 class Feed(models.Model):
@@ -20,11 +25,21 @@ class Feed(models.Model):
 
 class UserProfile(models.Model):  
     user = models.ForeignKey(User)  
-    subscriptions = models.ManyToManyField(Feed)
+    subscriptions = models.ManyToManyField(Feed, through='Subscription')
+    #categories = models.ManyToManyField(Category)
     #other fields here
 
     def __str__(self):  
           return "%s's profile" % self.user  
+
+class Subscription(models.Model):
+    feed = models.ForeignKey(Feed)
+    userProfile = models.ForeignKey(UserProfile) 
+    categories = models.ManyToManyField(Category)
+
+    def __str__(self):  
+          return "feed link is %s" % self.feed
+
 
 
 def create_user_profile(sender, instance, created, **kwargs):  
@@ -42,7 +57,3 @@ class Story(models.Model):
 
     def __unicode__(self):
         return self.title
-
-
-
-

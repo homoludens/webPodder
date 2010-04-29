@@ -7,7 +7,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
-from djtut.feeds.models import Feed, Story, UserProfile
+from djtut.feeds.models import Feed, Story, UserProfile, Category, Subscription
 from django.contrib.auth.models import User
 
 
@@ -37,11 +37,17 @@ def stories(request, feed_id):
     p = get_object_or_404(Feed, pk=feed_id)
     all_stories = Story.objects.filter(feed=feed_id)
     #return render_to_response('feeds/stories.html', {'feed': all_stories, 'title': p}, context_instance=RequestContext(request))
+    usersSubscribed = UserProfile.objects.filter(subscriptions=feed_id)
+    
+    for user in usersSubscribed:
+      print user.user.username
     
     context = RequestContext(request)
+
     context['dynamic_div'] = 'result'
     context['ref_url'] = '/feeds/'+feed_id+'/'
     context['feed'] = all_stories
+    context['usersSubscribed'] = usersSubscribed
     context['title'] = p
 
     return HttpResponse(render_to_string('feeds/stories.html', context),mimetype='text/plain')
@@ -66,7 +72,9 @@ def make_feed_form(request):
 		raise forms.ValidationError('You are already subscribed to %s' % f.title)
 		print "try"
 	      except Feed.DoesNotExist:
-		user_profile.subscriptions.add(f)
+		#user_profile.subscriptions.add(f)
+		subscribe = Subscription(feed=f, userProfile=user_profile)
+		subscribe.save()
 		raise forms.ValidationError('Podcast %s is added to your profile' % f.title) 
 		print "except"      
 	    
@@ -87,7 +95,9 @@ def make_feed_form(request):
 	    
 	    if f.pk: 
 	      user_profile = request.user.get_profile()
-	      user_profile.subscriptions.add(f)
+	      #user_profile.subscriptions.add(f)
+	      subscribe = Subscription(feed=f, userProfile=user_profile)
+	      subscribe.save()
 	    
 	    create_stories(f,tmp_feed)
 	    return f
@@ -127,12 +137,15 @@ def feed_unsubscribe(request, feed_id):
     """Unsubscribe from feed"""
     f = Feed.objects.get(pk=feed_id)
     user_profile = request.user.get_profile()
-    user_profile.subscriptions.remove(f)
+    #user_profile.subscriptions.remove(f) 
+    unsubscribe = Subscription.objects.get(feed=f, userProfile=user_profile)
+    unsubscribe.delete()    
     
     next_url = request.GET.get('next', '/feeds')
     return HttpResponseRedirect(next_url)
 
 def create_stories(feed_object,tmp_feed):
+    print "create_stories"
     """Create stories for new feed"""
     for entry in tmp_feed['entries']:
       i = Story(   feed = feed_object,
@@ -145,9 +158,25 @@ def create_stories(feed_object,tmp_feed):
 	i.save()
       except:
 	raise forms.ValidationError('Feed with problems')
-      
-      
-      
+
+
+
+
+def user_list(request):
+
+    latest_users = User.objects.all()[:5]
+
+    return render_to_response('feeds/userlist.html', {'latest_users': latest_users })
+
+
+def user_subscribtions(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    user_profile = user.get_profile()
+    feed_list = user_profile.subscriptions.all()
+    
+    return render_to_response('feeds/user_subscribtions.html', {'feeds': feed_list, 'user': user}, context_instance=RequestContext(request))
+
+
 from django import template
 register = template.Library()
 
