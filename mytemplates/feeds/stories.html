@@ -19,10 +19,24 @@
 {% autopaginate feed 4 %}
 
 
+
+
     <a href="/feeds" title="Back to list">Back to feed list</a>
 	<h1>{{ title.title  }}</h1>
 	{{title.url}}
 	{{titles}}
+<form method="POST" action="{% url category_add title.id %}" id="ac">
+  <label for="id_category">Category:</label>
+  <select name="category" id="id_category">
+      <option value="" selected="selected">---------</option>
+      {% for category in categories %}
+          <option value="{{ category.name|escape }}">{{ category.name|escape }}</option>
+      {% endfor %} 
+  </select>
+  <input type="submit" value="add">  
+</form>
+
+
 {% load avatar_tags %}
     <div id=users>
 	<p>

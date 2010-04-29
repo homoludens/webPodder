@@ -28,7 +28,8 @@ urlpatterns = patterns('djtut.feeds.views',
     url(r'^unsubscribe/(?P<feed_id>\d+)/$', 'feed_unsubscribe_confirm', name='feed_unsubscribe_confirm'),
     url(r'^unsubscribe-confirmed/(?P<feed_id>\d+)/$', 'feed_unsubscribe', name='feed_unsubscribe'),
 
-
+    url(r'^category/new/$', 'category_create', name='category_form'),  
+    url(r'^(?P<feed_id>\d+)/category/add/$', 'category_add', name='category_add'), 
     # Uncomment the next line to enable the admin:
 
 )

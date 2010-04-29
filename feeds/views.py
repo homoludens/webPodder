@@ -36,6 +36,7 @@ def index(request):
 def stories(request, feed_id):
     p = get_object_or_404(Feed, pk=feed_id)
     all_stories = Story.objects.filter(feed=feed_id)
+    categories = Category.objects.all()
     #return render_to_response('feeds/stories.html', {'feed': all_stories, 'title': p}, context_instance=RequestContext(request))
     usersSubscribed = UserProfile.objects.filter(subscriptions=feed_id)
     
@@ -48,9 +49,10 @@ def stories(request, feed_id):
     context['ref_url'] = '/feeds/'+feed_id+'/'
     context['feed'] = all_stories
     context['usersSubscribed'] = usersSubscribed
+    context['categories'] = categories
     context['title'] = p
 
-    return HttpResponse(render_to_string('feeds/stories.html', context),mimetype='text/plain')
+    return HttpResponse(render_to_string('feeds/stories.html', context))
 
 #closure: http://en.wikipedia.org/wiki/Closure_%28computer_science%29
 def make_feed_form(request):
@@ -104,6 +106,25 @@ def make_feed_form(request):
 
     return FeedForm
 
+def category_add(request, feed_id ):
+    """Add feed to category"""
+    if request.method == "POST":
+	category = request.POST.get('category', False)
+    
+    return render_to_response('feeds/category_add.html', {'feed_id': feed_id,'category':category })
+
+def category_create(request):
+    """Create new feed"""
+    #FeedForm = make_feed_form(request)
+  
+    return create_object(request,
+	#form_class = FeedForm,
+        model=Category,
+        template_name='feeds/category_form.html',
+        post_save_redirect="/feeds",
+	extra_context={'user':request.user}
+    )
+
 	 
 def feed_create(request):
     """Create new feed"""
@@ -145,7 +166,6 @@ def feed_unsubscribe(request, feed_id):
     return HttpResponseRedirect(next_url)
 
 def create_stories(feed_object,tmp_feed):
-    print "create_stories"
     """Create stories for new feed"""
     for entry in tmp_feed['entries']:
       i = Story(   feed = feed_object,
