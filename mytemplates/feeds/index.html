@@ -7,7 +7,7 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 	$("a[class='flink']").click(function () {
-	      $('#result').load($(this).attr('href').replace('#',''));
+	      $('#result').load($(this).attr('href').replace('#',''), );
 	});
 	$("a[class='dfeed']").click(function () {
 	      $('#addfeed').load($(this).attr('href').replace('#','')).hide().fadeIn('slow');

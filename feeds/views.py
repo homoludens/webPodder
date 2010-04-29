@@ -106,10 +106,21 @@ def make_feed_form(request):
 
     return FeedForm
 
-def category_add(request, feed_id ):
+def category_add(request, feed_id):
     """Add feed to category"""
+    
     if request.method == "POST":
-	category = request.POST.get('category', False)
+	category_id = request.POST.get('category', False)
+	category = Category.objects.get(id=category_id)
+	
+    f = Feed.objects.get(id=feed_id)
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    subscription = Subscription.objects.get(feed=f, userProfile=user_profile)
+    print dir(subscription.categories.add())
+    subscription.categories.add(category)
+    #subscription = Subscription(feed=f, userProfile=user_profile, categories = category)
+    #subscription.save()
     
     return render_to_response('feeds/category_add.html', {'feed_id': feed_id,'category':category })
 

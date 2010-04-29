@@ -8,7 +8,7 @@ class Category(models.Model):
     slug = models.SlugField('Slug')
 
     def __str__(self):  
-          return "%s's profile" % self.category
+          return "%s's profile" % self.name
 
 
 class Feed(models.Model):
@@ -34,7 +34,7 @@ class UserProfile(models.Model):
 
 class Subscription(models.Model):
     feed = models.ForeignKey(Feed)
-    userProfile = models.ForeignKey(UserProfile) 
+    userProfile = models.ForeignKey(UserProfile)
     categories = models.ManyToManyField(Category)
 
     def __str__(self):  

@@ -11,6 +11,15 @@
 // 	      alert($(this).attr('href').replace('?page','2/?page'));
 // 	      $('#result').load($(this).attr('href').replace('/?page','/2/?page'));
 	});
+
+    $("select").change(function () {
+	  var val = "";
+	  val = $("select#id_category").val();
+// 	  alert(str+' '+val)
+	  $.post("{% url category_add title.id %}", { category: val} );
+          $("div#s").text(val);
+        })
+
     });
 </script>
 {% endblock %}
@@ -25,17 +34,19 @@
 	<h1>{{ title.title  }}</h1>
 	{{title.url}}
 	{{titles}}
+
+
 <form method="POST" action="{% url category_add title.id %}" id="ac">
   <label for="id_category">Category:</label>
   <select name="category" id="id_category">
       <option value="" selected="selected">---------</option>
       {% for category in categories %}
-          <option value="{{ category.name|escape }}">{{ category.name|escape }}</option>
+          <option value="{{ category.id|escape }}">{{ category.name|escape }}</option>
       {% endfor %} 
   </select>
   <input type="submit" value="add">  
 </form>
-
+<div id="s"> </div>
 
 {% load avatar_tags %}
     <div id=users>
