@@ -49,6 +49,31 @@ h1{
 color:#73880A;
 }
 
+
+#catselect{
+/* display:none; */
+padding:25px 0px; 
+}
+
+#category{
+height:2em;
+/* background-color:#eee; */
+width:200px;
+}
 /*#addfeed{
 display:none;
 }*/
+
+h1#title{
+float:left;
+margin-right:20px;
+}
+
+#feedtitle {
+overflow:visible;
+position:relative;
+}
+
+input#id_category_input{
+/* margin-left:100px; */
+}

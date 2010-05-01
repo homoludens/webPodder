@@ -5,6 +5,7 @@
 {% block title %} {{ title.title  }} Stories {% endblock %}
 
 {% block head %}
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 	$("a[class='next']").click(function () {
@@ -12,14 +13,51 @@
 // 	      $('#result').load($(this).attr('href').replace('/?page','/2/?page'));
 	});
 
-    $("select").change(function () {
-	  var val = "";
-	  val = $("select#id_category").val();
-// 	  alert(str+' '+val)
-	  $.post("{% url category_add title.id %}", { category: val} );
-          $("div#s").text(val);
-        })
+//     $("select").change(function () {
+// 	  var val = "";
+// 	  val = $("select#id_category").val();
+// 	  if (val == 'newcat'){
+// // 	      alert("New Category");
+// 	      $('div#s').load("/feeds/category/new").hide().fadeIn('slow');
+// 	  }else{
+// 	      $.post("{% url category_add title.id %}", { category: val} );
+// 	  }
+//           $("div#s").text(val);
+//         })
 
+	$('#id_category').selectbox({
+        	onChangeCallback: function () {
+						  var val = "";
+						  val = $("select#id_category").val();
+						  if (val == 'newcat'){
+					// 	      alert("New Category");
+// 						      $('div#s').load("/feeds/category/new").hide().fadeIn('slow');
+						      jQuery.facebox({ ajax: "/feeds/category/new" });
+						  }else{
+						      $.post("{% url category_add title.id %}", { category: val} );
+						  }
+// 						  $("div#s").text(val);
+						}
+    	});
+
+
+	var position = $("input#id_category_input").position();
+	$("div#id_category_container").css('left',position.left); 
+
+
+//     $("div#catselect").mouseleave(
+// 				function () {
+// 				    $(this).hide();
+// 				    $("div#feedcat").show();
+// 				    $("select#id_category").mouseleave(function(event) { event.stopPropagation(); });
+// 				  }
+//     );
+//     $("div#feedcat").click(
+// 			    function () {
+// 				$(this).hide();
+// 				$("div#catselect").show();
+// 			      }
+// 			    );
     });
 </script>
 {% endblock %}
@@ -31,22 +69,28 @@
 
 
     <a href="/feeds" title="Back to list">Back to feed list</a>
-	<h1>{{ title.title  }}</h1>
-	{{title.url}}
-	{{titles}}
+<div id="feedtitle">
+	<h1 id="title">{{ title.title }}</h1>
+	<div id="catselect">
+      <!--       <form method="POST" action="{% url category_add title.id %}" id="ac"> -->
+	      <select name="category" id="id_category">
+		  <option value="" selected="selected">---------</option>
+		  {% for category in userCategories %}
+		      {% ifequal feedCategory category.name %}
+			  <option value="{{ category.id|escape }}" selected="selected">{{ category.name|escape }}</option>
+		      {% else %} 
+			  <option value="{{ category.id|escape }}">{{ category.name|escape }}</option>
+		      {% endifequal %}
+		  {% endfor %} 
+		  <option value="newcat">New category</option>
+	      </select>
+	    <!--   <input type="submit" value="add">   -->
+      <!--      </form>-->
+	    <div id="s"> </div>
+	</div>
+</div>
 
-
-<form method="POST" action="{% url category_add title.id %}" id="ac">
-  <label for="id_category">Category:</label>
-  <select name="category" id="id_category">
-      <option value="" selected="selected">---------</option>
-      {% for category in categories %}
-          <option value="{{ category.id|escape }}">{{ category.name|escape }}</option>
-      {% endfor %} 
-  </select>
-  <input type="submit" value="add">  
-</form>
-<div id="s"> </div>
+	<div id="feedurl">{{title.url}}</div>
 
 {% load avatar_tags %}
     <div id=users>

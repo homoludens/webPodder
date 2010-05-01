@@ -3,11 +3,14 @@
 {% block title %}Feed List{% endblock %}
 
 {% block head %}
-
+    <script src="/static/jquery-1.4.2.min.js"></script>
+    <script src="/static/jquery.form.js"></script>
+    <script type="text/javascript" src="/static/jquery.selectbox-1.2.js"></script>
+    <script type="text/javascript" src="/static/facebox/facebox.js"></script>
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 	$("a[class='flink']").click(function () {
-	      $('#result').load($(this).attr('href').replace('#',''), );
+	      $('#result').load($(this).attr('href').replace('#',''));
 	});
 	$("a[class='dfeed']").click(function () {
 	      $('#addfeed').load($(this).attr('href').replace('#','')).hide().fadeIn('slow');
@@ -18,13 +21,13 @@
     });
 </script>
 
-<script>
+<!--<script>
     jQuery().ready(function() {
 	var tab=jQuery("#result");
 	tab.load("/feeds/4") 
 // 	tab.load("/feeds/{{ feed.id }}") 
     });
-</script>
+</script>-->
 
 {% endblock %}
 {% load truncate_filters %} 

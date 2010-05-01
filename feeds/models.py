@@ -8,7 +8,7 @@ class Category(models.Model):
     slug = models.SlugField('Slug')
 
     def __str__(self):  
-          return "%s's profile" % self.name
+          return "category %s" % self.name
 
 
 class Feed(models.Model):

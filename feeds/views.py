@@ -34,11 +34,18 @@ def index(request):
 
 
 def stories(request, feed_id):
-    p = get_object_or_404(Feed, pk=feed_id)
+    feed = get_object_or_404(Feed, pk=feed_id)
     all_stories = Story.objects.filter(feed=feed_id)
+    print feed.subscription_set.all()
     categories = Category.objects.all()
     #return render_to_response('feeds/stories.html', {'feed': all_stories, 'title': p}, context_instance=RequestContext(request))
     usersSubscribed = UserProfile.objects.filter(subscriptions=feed_id)
+
+
+    up = UserProfile.objects.get(user=request.user)
+    s = Subscription.objects.get(userProfile=up, feed=feed)
+    
+    
     
     for user in usersSubscribed:
       print user.user.username
@@ -49,8 +56,12 @@ def stories(request, feed_id):
     context['ref_url'] = '/feeds/'+feed_id+'/'
     context['feed'] = all_stories
     context['usersSubscribed'] = usersSubscribed
-    context['categories'] = categories
-    context['title'] = p
+    if s.categories.all():
+      context['feedCategory'] = s.categories.all()[0].name
+    else:
+      context['feedCategory'] = ''
+    context['userCategories'] = categories
+    context['title'] = feed
 
     return HttpResponse(render_to_string('feeds/stories.html', context))
 
@@ -124,13 +135,20 @@ def category_add(request, feed_id):
     
     return render_to_response('feeds/category_add.html', {'feed_id': feed_id,'category':category })
 
+
+
+class CategoryForm(ModelForm):
+    class Meta:
+	model=Category
+	exclude=['slug']
+
 def category_create(request):
     """Create new feed"""
     #FeedForm = make_feed_form(request)
   
     return create_object(request,
-	#form_class = FeedForm,
-        model=Category,
+	form_class = CategoryForm,
+        #model=Category,
         template_name='feeds/category_form.html',
         post_save_redirect="/feeds",
 	extra_context={'user':request.user}
