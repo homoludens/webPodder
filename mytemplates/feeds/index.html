@@ -10,7 +10,28 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 	$("a[class='flink']").click(function () {
-	      $('#result').load($(this).attr('href').replace('#',''));
+	      $('#result').load($(this).attr('href').replace('#',''), 
+function () {
+	$("a[class='next']").click(function () {
+	});
+	$('#id_category').selectbox({
+        	onChangeCallback: function () {
+						  var val = "";
+						  val = $("select#id_category").val();
+						  if (val == 'newcat'){
+						      jQuery.facebox({ ajax: "/feeds/category/new" });
+						  }else{
+						      $.post("feeds/{{title.id}}/category/add/", { category: val} );
+						  }
+						}
+    	});
+
+
+	var position = $("input#id_category_input").position();
+	$("div#id_category_container").css('left',position.left); 
+    }
+
+);
 	});
 	$("a[class='dfeed']").click(function () {
 	      $('#addfeed').load($(this).attr('href').replace('#','')).hide().fadeIn('slow');
