@@ -9,55 +9,21 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 	$("a[class='next']").click(function () {
-// 	      alert($(this).attr('href').replace('?page','2/?page'));
-// 	      $('#result').load($(this).attr('href').replace('/?page','/2/?page'));
-	});
-
-//     $("select").change(function () {
-// 	  var val = "";
-// 	  val = $("select#id_category").val();
-// 	  if (val == 'newcat'){
-// // 	      alert("New Category");
-// 	      $('div#s').load("/feeds/category/new").hide().fadeIn('slow');
-// 	  }else{
-// 	      $.post("{% url category_add title.id %}", { category: val} );
-// 	  }
-//           $("div#s").text(val);
-//         })
-
 	$('#id_category').selectbox({
         	onChangeCallback: function () {
 						  var val = "";
 						  val = $("select#id_category").val();
 						  if (val == 'newcat'){
-					// 	      alert("New Category");
-// 						      $('div#s').load("/feeds/category/new").hide().fadeIn('slow');
 						      jQuery.facebox({ ajax: "/feeds/category/new" });
 						  }else{
 						      $.post("{% url category_add title.id %}", { category: val} );
 						  }
-// 						  $("div#s").text(val);
 						}
     	});
 
 
 	var position = $("input#id_category_input").position();
 	$("div#id_category_container").css('left',position.left); 
-
-
-//     $("div#catselect").mouseleave(
-// 				function () {
-// 				    $(this).hide();
-// 				    $("div#feedcat").show();
-// 				    $("select#id_category").mouseleave(function(event) { event.stopPropagation(); });
-// 				  }
-//     );
-//     $("div#feedcat").click(
-// 			    function () {
-// 				$(this).hide();
-// 				$("div#catselect").show();
-// 			      }
-// 			    );
     });
 </script>
 {% endblock %}
